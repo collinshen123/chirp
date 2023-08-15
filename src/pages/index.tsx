@@ -22,6 +22,7 @@ export default function Home() {
           {!!user.isSignedIn && <SignOutButton />}
           
         </div>
+        <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
       </main>
     </>
   );
