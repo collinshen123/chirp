@@ -2,25 +2,55 @@ import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { api } from "~/utils/api";
-
+import { RouterOutputs, api } from "~/utils/api";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 
 const CreatePostWizard = () => {
 
   const { user } = useUser();
 
+  console.log(user);
+
   if (!user) return null;
 
   return (
-  <div className="flex">
-    <img src={user.profileImageUrl} alt="Profile image" />
+  <div className="flex w-full gap-3 ">
+    <img
+      src={user.profileImageUrl}
+      alt="Profile image"
+      className="h-12 w-12 rounded-full"
+     />
+     <input placeholder="Type some emojis!" className="grow bg-transparant outline-none" /> 
   </div>
   );
 }
 
+type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 
+const PostView = (props: PostWithUser) => {
+  const { post, author } = props;
+  return (
+    <div key={post.id} className="flex gap-3 p-4 border-b">
+      <img 
+        src={author.profileImageUrl} 
+        alt="Profile image"
+        className="h-12 w-12 rounded-full"
+      />
+      <div className="flex flex-col">
+        <div className="flex gap-1 text-slate-600">
+          <span>{`@${author.username}`}</span>
+          <span className=" text-slate-400">{`· ${dayjs(post.createdAt).fromNow()}`}</span>
+        </div>
+        <span> {post.content} </span>
+      </div>
+      
+    </div>
+  )
 
+}
 
 
 const Home: NextPage = () => {
@@ -50,8 +80,9 @@ const Home: NextPage = () => {
             {!!user.isSignedIn && < CreatePostWizard/>}
           </div>
           <div className="flex flex-col">
-            {[...data, ...data] ?.map((post) => (
-              <div key={post.id} className="p-8 border-b">{post.content}</div>))}
+            {[...data, ...data] ?.map((fullPost) => (
+              <PostView {...fullPost} key={fullPost.post.id}/>
+            ))}
           </div>
         </div>
       </main>
