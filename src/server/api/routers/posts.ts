@@ -40,7 +40,7 @@ export const postsRouter = createTRPCRouter({
             post,
             author: {
                 ...author,
-                username: author.username,
+                username: author?.username,
             },
         };
         
