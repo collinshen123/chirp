@@ -3,7 +3,7 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-import { z } from "zod";
+// import { z } from "zod";
 
 const filterUserForClient = (user: User) => {
     return {
