@@ -64,7 +64,7 @@ export const postsRouter = createTRPCRouter({
     create: privateProcedure
     .input(
         z.object({
-            content: z.string().min(1).max(280),
+            content: z.string().min(10, { message: "Must be 10 or more characters long" }).max(280, { message: "Must be 280 or fewer characters" }),
             // to only allow emojis to be posted, use this instead:
             // content: z.string().emoji().min(1).max(280),
         })
