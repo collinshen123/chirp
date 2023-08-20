@@ -30,7 +30,8 @@ const CreatePostWizard = () => {
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
-      if (errorMessage && errorMessage[0]) {
+      
+      if (errorMessage?.[0]) {
         toast.error(errorMessage[0]);
       } else {
         toast.error("Failed to post! Post must be between 10 and 280 characters.");
