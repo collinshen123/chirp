@@ -13,6 +13,16 @@ const filterUserForClient = (user: User) => {
     };
 }
 
+import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
+import { Redis } from "@upstash/redis";
+
+// Create a new ratelimiter, that allows 5 requests per 1 minute
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, "1 m"),
+  analytics: true
+});
+
 export const postsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
@@ -61,8 +71,11 @@ export const postsRouter = createTRPCRouter({
         
     )
     .mutation(async ({ ctx, input }) => {
-
         const authorid = ctx.userId;
+
+        const { success } = await ratelimit.limit(authorid);
+
+        if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
         const post = await ctx.prisma.post.create({
             data: {
