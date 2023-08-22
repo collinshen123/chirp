@@ -1,18 +1,12 @@
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { NextPage } from "next";
-import Head from "next/head";
-// import Link from "next/link";
 import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
-
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { LOADIPHLPAPI } from "dns";
-import Link from "next/link";
 import { PageLayout } from "~/components/layout";
 import { PostView } from "~/components/postview";
 dayjs.extend(relativeTime);
@@ -43,8 +37,6 @@ const CreatePostWizard = () => {
 
     },
   });
-
-  console.log(user);
 
   if (!user) return null;
 
@@ -118,7 +110,7 @@ const Home: NextPage = () => {
 
   return (
       <PageLayout>
-      <div className="flex border-b p-4">
+      <div className="flex border-b p-5">
         {!isSignedIn && (
           <div className="flex justify-center">
             <SignInButton />

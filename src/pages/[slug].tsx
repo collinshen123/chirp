@@ -1,11 +1,13 @@
 
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps } from "next";
 import Head from "next/head";
 import { api } from "~/utils/api";
 import { PageLayout } from "~/components/layout";
 import { LoadingPage } from "~/components/loading";
 import { PostView } from "~/components/postview";
 import { generateSSHelper } from "~/server/helpers/ssHelper";
+import { NextPage } from "next";
+import Link from "next/link";
 
 
 const ProfileFeed = (props: { userId: string }) => {
@@ -26,30 +28,36 @@ const ProfileFeed = (props: { userId: string }) => {
   );
 };
 
-
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
-
-  const { data } = api.profile.getUserByUsername.useQuery({ username});
+  const { data } = api.profile.getUserByUsername.useQuery({ username });
 
   if (!data) return <div>Something went wrong</div>;
+
   return (
     <>
       <Head>
         <title>{data.username}</title>
       </Head>
       <PageLayout>
-          <div className="relative h-36  bg-slate-500">
-            <img
-              src={data.imageUrl}
-              alt={`${data.username ?? ""}'s profile picture`}
-              width={120}
-              height={120}
-              className="-mb-[60px] absolute bottom-0 left-0  ml-8 border-4 border-white rounded-full"
-            />
-          
+        <div className="flex items-center">
+          <Link href="/" passHref>
+            <button className="mr-6 px-6 py-3 text-lg ">
+            &larr; {/* Unicode left arrow */}
+            </button>
+          </Link>
+          <h1 className="text-xl font-bold">@{data.username}</h1>
+        </div>
+        <div className="relative h-36 bg-slate-500">
+          <img
+            src={data.imageUrl}
+            alt={`${data.username ?? ""}'s profile picture`}
+            width={120}
+            height={120}
+            className="-mb-[60px] absolute bottom-0 left-0 ml-4 border-4 border-white rounded-full"
+          />
         </div>
         <div className="h-[80px]"></div>
-        <div className="p-6 text-xl font-bold" >@{data.username}</div>
+        <div className="p-6 text-xl font-bold">@{data.username}</div>
         <div className="w-full border-b border-slate-300" />
         <ProfileFeed userId={data.id} />
       </PageLayout>
