@@ -9,12 +9,13 @@ const filterUserForClient = (user: User) => {
     return {
         id: user.id,
         username: user.username, 
-        profileImageUrl: user.profileImageUrl,
+        imageUrl: user.imageUrl
     };
 }
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
+
 
 // Create a new ratelimiter, that allows 5 requests per 1 minute
 const ratelimit = new Ratelimit({
