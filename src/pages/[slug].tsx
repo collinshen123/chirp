@@ -4,6 +4,7 @@ import Head from "next/head";
 import { api } from "~/utils/api";
 
 
+
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   console.log(username);
 
@@ -15,9 +16,21 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
       <Head>
         <title>{data.username}</title>
       </Head>
-      <main className="flex h-screen justify-center">
-        <div>@{data.username}</div>
-      </main>
+      <PageLayout>
+          <div className="relative h-36  bg-slate-500">
+            <img
+              src={data.imageUrl}
+              alt={`${data.username ?? ""}'s profile picture`}
+              width={120}
+              height={120}
+              className="-mb-[60px] absolute bottom-0 left-0  ml-8 border-4 border-white rounded-full"
+            />
+          
+        </div>
+        <div className="h-[80px]"></div>
+        <div className="p-6 text-xl font-bold" >@{data.username}</div>
+        <div className="w-full border-b border-slate-300" />
+      </PageLayout>
     </>
   );
 };
@@ -30,6 +43,8 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import superjson from 'superjson';
+import { PageLayout } from "~/components/layout";
+import { IMAGES_MANIFEST } from "next/dist/shared/lib/constants";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const ssg = createServerSideHelpers({
