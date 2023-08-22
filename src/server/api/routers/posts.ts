@@ -15,6 +15,37 @@ const filterUserForClient = (user: User) => {
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
+import type { Post } from "@prisma/client";
+
+const addUserDataToPosts = async (posts: Post[]) => {
+    const users = (
+        await clerkClient.users.getUserList({
+            userId: posts.map((post) => post.authorid),
+            limit:100,
+        })
+    ).map(filterUserForClient);
+
+
+    return posts.map((post) => {
+        const author = users.find((user) => user.id === post.authorid);
+
+        // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+        if (!author || !author.username)
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Author for post not found",
+            });
+
+        return {
+            post,
+            author: {
+                ...author,
+                username: author?.username,
+            },
+        };
+    });
+        
+}
 
 
 // Create a new ratelimiter, that allows 5 requests per 1 minute
@@ -61,6 +92,29 @@ export const postsRouter = createTRPCRouter({
     });
         
   }),
+  
+
+  getPostsByUserId: publicProcedure
+  .input(
+    z.object({
+      userId: z.string(),
+    })
+  )
+  .query(({ ctx, input }) =>
+    ctx.prisma.post
+      .findMany({
+        where: {
+          authorid: input.userId,
+        },
+        take: 100,
+        orderBy: [{ createdAt: "desc" }],
+      })
+      .then(addUserDataToPosts)
+  ),
+
+
+    
+
 
     create: privateProcedure
     .input(
