@@ -7,17 +7,16 @@ import Image from "next/image";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { PageLayout, Sidebar } from "~/components/layout";
+import { PageLayout, } from "~/components/layout";
 import { PostView } from "~/components/postview";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 dayjs.extend(relativeTime);
 
 
 const CreatePostWizard = () => {
-
   const { user } = useUser();
-
   const [input, setInput] = useState("");
-
   const ctx = api.useContext();
 
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
@@ -33,51 +32,50 @@ const CreatePostWizard = () => {
       } else {
         toast.error("Failed to post! Post must be between 10 and 280 characters.");
       }
-
-
     },
   });
 
   if (!user) return null;
 
   return (
-  <div className="flex w-full gap-3 ">
-    <Image
-      src={user.imageUrl}
-      alt="Profile image"
-      className="h-10 w-10 rounded-full"
-      width={56}
-      height={56}
-    />
-    <input 
-      placeholder="Post something!" 
-      className="grow bg-transparant outline-none" 
-      type="text"
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {;
-          e.preventDefault();
-          if (input != "") {
-            mutate({content: input});
-          }
-        }
-      }}
-
-      disabled={isPosting}
-    /> 
-    {input != "" && !isPosting && (
-      <button onClick={() => mutate({content: input })}>Post</button>
-    )}
-    {isPosting && (
-      <div className="flex items-center justify-center">
-        <LoadingSpinner size={20}/> 
+    <div className="flex w-full gap-3 ">
+      <div>
+        <img src="/images/twitter-logo.png" alt="Twitter Logo" style={{ width: "3rem" }} />
       </div>
-    )}
-  </div>
+    
+      <Image
+        src={user.imageUrl}
+        alt="Profile image"
+        className="h-10 w-10 rounded-full"
+        width={56}
+        height={56}
+      />
+      <input 
+        placeholder="Post something!" 
+        className="grow bg-transparant outline-none" 
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input !== "") {
+              mutate({ content: input });
+            }
+          }
+        }}
+        disabled={isPosting}
+      />
+      <button onClick={() => mutate({ content: input })}>Post</button>
+      {isPosting && (
+        <div className="flex items-center justify-center">
+          <LoadingSpinner size={20}/> 
+        </div>
+      )}
+    </div>
   );
 }
+
 
 
 
@@ -110,10 +108,6 @@ const Home: NextPage = () => {
   return (
     <PageLayout>
       <div className="flex">
-        
-        <Sidebar />
-
-        
         <div className="flex-grow">
           <div className="flex border-b p-5">
             {!isSignedIn && (
@@ -123,11 +117,13 @@ const Home: NextPage = () => {
             )}
             {isSignedIn && <CreatePostWizard />}
           </div>
-          
           <Feed />
         </div>
+        
       </div>
-    </PageLayout>
+      
+      </PageLayout>
+    
   );
 };
 export default Home;

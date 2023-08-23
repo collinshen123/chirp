@@ -42,10 +42,19 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         <div className="flex items-center">
           <Link href="/" passHref>
             <button className="mr-6 px-6 py-3 text-lg ">
-            &larr; {/* Unicode left arrow */}
+              &larr; {/* Unicode left arrow */}
             </button>
           </Link>
-          <h1 className="text-xl font-bold">@{data.username}</h1>
+          <h1 className="text-xl font-bold">
+            <span style={{ display: "inline-flex", alignItems: "center" }}>
+              @{data.username}
+              <img
+                src="/images/twitter-verified.png"
+                alt="Twitter Verified symbol"
+                style={{ width: "2rem" }}
+              />
+            </span>
+          </h1>
         </div>
         <div className="relative h-36 bg-slate-500">
           <img
@@ -57,12 +66,24 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
           />
         </div>
         <div className="h-[80px]"></div>
-        <div className="p-6 text-xl font-bold">@{data.username}</div>
+        <div className="p-6 text-xl font-bold">
+          <span style={{ display: "inline-flex", alignItems: "center" }}>
+            @{data.username}
+            <img
+              src="/images/twitter-verified.png"
+              alt="Twitter Verified symbol"
+              style={{ width: "2rem" }}
+              />
+          </span>
+        </div>
         <div className="w-full border-b border-slate-300" />
         <ProfileFeed userId={data.id} />
       </PageLayout>
     </>
   );
+  
+  
+  
 };
 
 
