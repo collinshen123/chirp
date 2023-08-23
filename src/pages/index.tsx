@@ -7,7 +7,7 @@ import Image from "next/image";
 import { LoadingPage, LoadingSpinner } from "~/components/loading";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { PageLayout } from "~/components/layout";
+import { PageLayout, Sidebar } from "~/components/layout";
 import { PostView } from "~/components/postview";
 dayjs.extend(relativeTime);
 
@@ -98,29 +98,36 @@ const Feed = () => {
 
 }
 
+// create a PostMenu component that creates a menu bar on the left side of the PostView component
+
 const Home: NextPage = () => {
-  const {isLoaded: userLoaded, isSignedIn} = useUser();
+  const { isLoaded: userLoaded, isSignedIn } = useUser();
 
   api.posts.getAll.useQuery();
 
   if (!userLoaded) return <div />;
 
-
-
-
   return (
-      <PageLayout>
-      <div className="flex border-b p-5">
-        {!isSignedIn && (
-          <div className="flex justify-center">
-            <SignInButton />
+    <PageLayout>
+      <div className="flex">
+        
+        <Sidebar />
+
+        
+        <div className="flex-grow">
+          <div className="flex border-b p-5">
+            {!isSignedIn && (
+              <div className="flex justify-center">
+                <SignInButton />
+              </div>
+            )}
+            {isSignedIn && <CreatePostWizard />}
           </div>
-          )}
-        {isSignedIn && < CreatePostWizard/>}
+          
+          <Feed />
+        </div>
       </div>
-      
-      <Feed/>
-      </PageLayout>
+    </PageLayout>
   );
-}
+};
 export default Home;
