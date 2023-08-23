@@ -38,11 +38,11 @@ const CreatePostWizard = () => {
   if (!user) return null;
 
   return (
-    <div className="flex w-full gap-3 ">
+    <div className="flex w-full gap-3">
       <div>
         <img src="/images/twitter-logo.png" alt="Twitter Logo" style={{ width: "3rem" }} />
       </div>
-    
+  
       <Image
         src={user.imageUrl}
         alt="Profile image"
@@ -66,7 +66,9 @@ const CreatePostWizard = () => {
         }}
         disabled={isPosting}
       />
-      <button onClick={() => mutate({ content: input })}>Post</button>
+      <button className="font-bold bg-sky-500 rounded-lg px-4 py-2 text-white hover:bg-sky-500 transition duration-200 ease-in-out" onClick={() => mutate({ content: input })}>
+        Post
+      </button>
       {isPosting && (
         <div className="flex items-center justify-center">
           <LoadingSpinner size={20}/> 
@@ -74,6 +76,7 @@ const CreatePostWizard = () => {
       )}
     </div>
   );
+  
 }
 
 

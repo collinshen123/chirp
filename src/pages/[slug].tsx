@@ -55,8 +55,15 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
               />
             </span>
           </h1>
+          <img
+            src="/images/twitter-logo.png"
+            alt="Twitter Logo"
+            style={{ width: "2rem", marginLeft: "auto", marginRight: "1rem" }}
+          />
         </div>
-        <div className="relative h-36 bg-slate-500">
+        <div className="relative h-52 bg-slate-500">
+  <img src="/images/kim-meme.png" alt="Twitter Logo" className="absolute top-0 left-0 w-full h-full object-cover object-top" />
+
           <img
             src={data.imageUrl}
             alt={`${data.username ?? ""}'s profile picture`}

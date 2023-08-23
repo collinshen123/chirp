@@ -23,17 +23,24 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
       <PageLayout>
         <div className="flex items-center border-b ">
           <Link href="/" passHref>
-            <button className="mr-6 px-6 py-3 text-lg  ">
-            &larr; {/* Unicode left arrow */}
+            <button className="mr-6 px-6 py-3 text-lg">
+              &larr; {/* Unicode left arrow */}
             </button>
           </Link>
           <h1 className="text-xl font-bold">Post</h1>
+          {/* Twitter Logo */}
+          <img
+            src="/images/twitter-logo.png"
+            alt="Twitter Logo"
+            style={{ width: "2rem", marginLeft: "auto", marginRight: "1rem" }}
+          />
         </div>
-        <PostView {...data} /> 
+        <PostView {...data} />
       </PageLayout>
     </>
   );
 };
+
 
 
 
