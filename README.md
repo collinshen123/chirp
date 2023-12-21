@@ -21,3 +21,6 @@ These are the services used in this project
 - [Axiom](https://axiom.co/?ref=theo)
 
 
+Wake up the database here if there is an error:
+https://app.planetscale.com/cshen123/tweeterdb
+
